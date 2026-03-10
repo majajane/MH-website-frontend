@@ -1,0 +1,93 @@
+
+Step 3: Update your database table - Make sure your orders table has these columns:
+
+id (primary key)
+user_id
+batch_code
+item_name
+customer_name
+customer_phone
+customer_address
+payment_status (pending/completed)
+created_at (timestamp)
+
+
+✅ Customer clicks button on homepage → goes to order form
+✅ Customer fills batch code, item name, and info → order created as "pending"
+✅ Admin sees pending orders on dashboard
+✅ Admin prints invoice
+✅ Admin clicks button to mark as "completed"
+
+Step 1: Update your products table - Add a column for pictures:
+ALTER TABLE `products` ADD COLUMN `image` VARCHAR(255);
+
+
+
+Step 2: Create a Product Add page (for sellers/admins only):<?php
+@include 'config.php';
+session_start();
+
+$admin_id = $_SESSION['admin_id'];
+
+if(!isset($admin_id)){
+   header('location:login.php');
+}
+
+if(isset($_POST['submit'])){
+   $batch_code = $_POST['batch_code'];
+   $item_name = $_POST['item_name'];
+   $image = $_FILES['image']['name'];
+   $image_tmp = $_FILES['image']['tmp_name'];
+   $image_folder = 'uploaded_img/'.$image;
+
+   // Move uploaded image
+   move_uploaded_file($image_tmp, $image_folder);
+
+   $insert_product = $conn->prepare("INSERT INTO `products` (batch_code, item_name, image) VALUES (?, ?, ?)");
+   $insert_product->execute([$batch_code, $item_name, $image]);
+   
+   $message[] = 'Product added successfully!';
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Add Product</title>
+   <link rel="stylesheet" href="css/admin_style.css">
+</head>
+<body>
+
+<?php include 'admin_header.php'; ?>
+
+<section class="form-container">
+   <form method="POST" enctype="multipart/form-data">
+      <h3>Add Product</h3>
+
+      <input type="text" name="batch_code" placeholder="Batch Code" required>
+      <input type="text" name="item_name" placeholder="Item Name" required>
+      
+      <input type="file" name="image" accept="image/*" required>
+      <img id="preview" style="max-width:200px; margin-top:10px;">
+
+      <input type="submit" name="submit" value="Add Product" class="btn">
+   </form>
+</section>
+
+<script>
+   // Preview image before upload
+   document.querySelector('input[type="file"]').addEventListener('change', function(e){
+      const reader = new FileReader();
+      reader.onload = function(){
+         document.getElementById('preview').src = reader.result;
+      }
+      reader.readAsDataURL(e.target.files[0]);
+   });
+</script>
+
+</body>
+</html>
+
+
+fix home & style.css 

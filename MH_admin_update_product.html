@@ -1,0 +1,150 @@
+<?php
+
+@include 'MH_configuration.php';
+session_start();
+
+$message = [];
+
+$admin_id = $_SESSION['admin_id'];
+
+if(!isset($admin_id)){
+   header('location:MH_login.php');
+   exit;
+}
+
+// GET PRODUCT ID FROM URL
+if(isset($_GET['update'])){
+   $update_id = $_GET['update'];
+}else{
+   header('location:MH_admin_products.php');
+   exit;
+}
+
+// FETCH PRODUCT DATA
+$select = $conn->prepare("SELECT * FROM products WHERE id = ?");
+$select->execute([$update_id]);
+$product = $select->fetch(PDO::FETCH_ASSOC);
+
+if(!$product){
+   header('location:MH_admin_products.php');
+   exit;
+}
+
+
+// UPDATE PRODUCT
+if(isset($_POST['update_product'])){
+
+   $id = $_POST['id'];
+   $dressnum = htmlspecialchars(trim($_POST['dressnum']));
+   $batchcode = htmlspecialchars(trim($_POST['batchcode']));
+   $price = (float) $_POST['price'];
+   $qty = (int) $_POST['qty'];
+   $album = htmlspecialchars(trim($_POST['album']));
+   $details = htmlspecialchars(trim($_POST['details']));
+
+   $image = $_FILES['image']['name'];
+   $image = htmlspecialchars(trim($image));
+
+   if(!empty($image)){
+      $image_tmp = $_FILES['image']['tmp_name'];
+      move_uploaded_file($image_tmp, 'uploaded_img/'.$image);
+
+      $update = $conn->prepare("
+         UPDATE products 
+         SET dressnum=?, batchcode=?, album=?, details=?, price=?, qty=?, image=? 
+         WHERE id=?
+      ");
+
+      $update->execute([
+         $dressnum,
+         $batchcode,
+         $album,
+         $details,
+         $price,
+         $qty,
+         $image,
+         $id
+      ]);
+
+   }else{
+
+      $update = $conn->prepare("
+         UPDATE products 
+         SET dressnum=?, batchcode=?, album=?, details=?, price=?, qty=? 
+         WHERE id=?
+      ");
+
+      $update->execute([
+         $dressnum,
+         $batchcode,
+         $album,
+         $details,
+         $price,
+         $qty,
+         $id
+      ]);
+   }
+
+   header('location:MH_admin_update_product.php');
+   exit;
+}
+
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Update Product</title>
+
+   <link rel="stylesheet" href="MH_admin_style.css">
+</head>
+<body>
+
+<?php include 'MH_admin_header.php'; ?>
+
+<section class="update-product">
+   <h1 class="title">Update Product</h1>
+   <form action="" method="POST" enctype="multipart/form-data">
+
+      <input type="hidden" name="id" value="<?= $product['id']; ?>">
+
+      <div class="flex">
+         <div class="inputBox">
+            <input type="number" name="dressnum" class="box" required 
+            value="<?= $product['dressnum']; ?>">
+            <input type="number" min="0" name="qty" class="box" required 
+            value="<?= $product['qty']; ?>">
+            <select name="album" class="box" required>
+               <option value="<?= $product['album']; ?>" selected>
+                  <?= $product['album']; ?>
+               </option>
+               <option value="February Collection 2026">February Collection 2026</option>
+               <option value="Sale February Collection 2026">Sale February Collection 2026</option>
+               <option value="Super Sale February Collection 2026">Super Sale February Collection 2026</option>
+            </select>
+         </div>
+
+         <div class="inputBox">
+            <input type="number" name="batchcode" pattern="[0-9]+-[0-9]+" class="box" required 
+            value="<?= $product['batchcode']; ?>">
+            <input type="number" min="1" name="price" class="box" required 
+            value="<?= $product['price']; ?>">
+            <input type="file" name="image" class="box" 
+            accept="image/jpg, image/jpeg, image/png">
+         </div>
+      </div>
+
+      <textarea name="details" class="box" required 
+      cols="30" rows="10"><?= $product['details']; ?></textarea>
+      <input type="submit" class="btn" value="update product" name="update_product">
+
+   </form>
+
+</section>
+
+</body>
+</html>

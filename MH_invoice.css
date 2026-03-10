@@ -1,0 +1,457 @@
+@import url('MH_components.css');
+
+                                                        /* INVOICE */
+*, *::after, *::before {
+padding: 0; margin: 0; box-sizing: border-box;
+}
+
+:root {
+--maroon: #570505;
+--maroon-light: #7a1010;
+--peach: #ffdab9;
+--peach-soft: #fff5ee;
+--dark: #2c1a1a;
+--mid: #7a5c5c;
+--light: #f9f0ea;
+--border: rgba(87, 5, 5, 0.12);
+--white: #ffffff;
+}
+
+body {
+font-family: 'DM Sans', sans-serif;
+background: var(--light);
+color: var(--dark);
+font-size: 13px;
+min-height: 100vh;
+padding: 30px 16px 60px;
+}
+
+/* ── wrapper ── */
+.invoice-wrapper {
+max-width: 820px;
+margin: 0 auto;
+}
+
+/* ── card ── */
+.invoice {
+background: var(--white);
+border-radius: 12px;
+overflow: hidden;
+box-shadow: 0 4px 32px rgba(87,5,5,0.10);
+}
+
+/* ══ HEADER ══ */
+.inv-header {
+background: var(--maroon);
+padding: 36px 48px 28px;
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+gap: 20px;
+}
+
+.inv-brand h1 {
+font-family: 'Cormorant Garamond', serif;
+font-weight: 700;
+font-size: 32px;
+color: var(--peach);
+letter-spacing: 1px;
+line-height: 1;
+}
+
+.inv-brand p {
+font-size: 11px;
+color: rgba(255,218,185,0.65);
+letter-spacing: 3px;
+text-transform: uppercase;
+margin-top: 4px;
+}
+
+.inv-title-block {
+text-align: right;
+}
+
+.inv-title-block h2 {
+font-family: 'Cormorant Garamond', serif;
+font-size: 44px;
+font-weight: 300;
+color: rgba(255,218,185,0.25);
+letter-spacing: 6px;
+text-transform: uppercase;
+line-height: 1;
+}
+
+.inv-title-block .inv-no {
+font-size: 12px;
+color: var(--peach);
+letter-spacing: 2px;
+margin-top: 6px;
+}
+
+/* ══ META ROW ══ */
+.inv-meta {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1px;
+background: var(--border);
+}
+
+.inv-meta-cell {
+background: var(--peach-soft);
+padding: 18px 48px;
+}
+
+.inv-meta-cell label {
+display: block;
+font-size: 9px;
+letter-spacing: 2.5px;
+text-transform: uppercase;
+color: var(--mid);
+margin-bottom: 4px;
+}
+
+.inv-meta-cell span {
+font-weight: 500;
+color: var(--dark);
+font-size: 13px;
+}
+
+/* ══ PARTIES ══ */
+.inv-parties {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1px;
+background: var(--border);
+}
+
+.inv-party {
+background: var(--white);
+padding: 28px 48px;
+}
+
+.inv-party label {
+display: block;
+font-size: 9px;
+letter-spacing: 2.5px;
+text-transform: uppercase;
+color: var(--maroon);
+margin-bottom: 12px;
+font-weight: 500;
+}
+
+.inv-party p {
+line-height: 1.8;
+color: var(--dark);
+}
+
+.inv-party .name {
+font-family: 'Cormorant Garamond', serif;
+font-size: 18px;
+font-weight: 600;
+color: var(--dark);
+margin-bottom: 2px;
+}
+
+.inv-party .contact-row {
+display: flex;
+align-items: center;
+gap: 6px;
+font-size: 12px;
+color: var(--mid);
+margin-top: 2px;
+}
+
+.inv-party .contact-row i {
+color: var(--maroon);
+width: 12px;
+font-size: 10px;
+}
+
+/* ══ TABLE ══ */
+.inv-table-wrap {
+padding: 0 48px 0;
+overflow-x: auto;
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+min-width: 540px;
+}
+
+thead tr {
+border-bottom: 2px solid var(--maroon);
+}
+
+thead td {
+padding: 14px 12px;
+font-size: 9px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--maroon);
+font-weight: 500;
+}
+
+tbody tr {
+border-bottom: 1px solid var(--border);
+transition: background 0.2s;
+}
+
+tbody tr:last-child {
+border-bottom: none;
+}
+
+tbody td {
+padding: 16px 12px;
+color: var(--dark);
+vertical-align: middle;
+}
+
+.td-item strong {
+display: block;
+font-weight: 500;
+font-size: 13px;
+}
+
+.td-batch {
+display: inline-block;
+background: var(--peach-soft);
+border: 1px solid var(--peach);
+color: var(--maroon);
+font-size: 10px;
+padding: 2px 8px;
+border-radius: 20px;
+margin-top: 4px;
+font-weight: 500;
+}
+
+.td-right {
+text-align: right;
+}
+
+.td-center {
+text-align: center;
+}
+
+/* ══ TOTALS ══ */
+.inv-totals {
+margin: 0 48px;
+border-top: 2px solid var(--maroon);
+display: flex;
+justify-content: flex-end;
+padding: 20px 0 28px;
+}
+
+.totals-block {
+min-width: 240px;
+}
+
+.total-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 8px 0;
+border-bottom: 1px dashed var(--border);
+gap: 40px;
+}
+
+.total-row:last-child {
+border-bottom: none;
+border-top: 2px solid var(--maroon);
+padding-top: 14px;
+margin-top: 4px;
+}
+
+.total-row .label {
+font-size: 11px;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(--mid);
+}
+
+.total-row .value {
+font-weight: 500;
+color: var(--dark);
+}
+
+.total-row:last-child .label,
+.total-row:last-child .value {
+color: var(--maroon);
+font-family: 'Cormorant Garamond', serif;
+font-size: 20px;
+font-weight: 700;
+}
+
+/* ══ FOOTER ══ */
+.inv-foot {
+background: var(--peach-soft);
+border-top: 1px solid var(--border);
+padding: 24px 48px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 20px;
+flex-wrap: wrap;
+}
+
+.inv-note {
+font-size: 11px;
+color: var(--mid);
+max-width: 400px;
+line-height: 1.7;
+}
+
+.inv-note strong {
+color: var(--maroon);
+}
+
+/* ══ BUTTONS ══ */
+.inv-buttons {
+display: flex;
+gap: 10px;
+padding: 28px 48px;
+justify-content: center;
+background: var(--white);
+}
+
+.inv-btn {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+padding: 11px 24px;
+border: 1.5px solid var(--maroon);
+border-radius: 6px;
+background: transparent;
+color: var(--maroon);
+font-family: 'DM Sans', sans-serif;
+font-size: 13px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+letter-spacing: 0.5px;
+}
+
+.inv-btn:hover {
+background: var(--maroon);
+color: var(--peach);
+}
+
+.inv-btn.primary {
+background: var(--maroon);
+color: var(--peach);
+}
+
+.inv-btn.primary:hover {
+background: var(--maroon-light);
+}
+
+
+@media print {
+body { background: white; padding: 0; }
+.invoice-wrapper { max-width: 100%; }
+.invoice { box-shadow: none; border-radius: 0; }
+.inv-buttons { display: none !important; }
+}
+
+
+@media (max-width: 680px) {
+.inv-header { padding: 24px; flex-direction: column; }
+.inv-title-block { text-align: left; }
+.inv-meta, .inv-parties { grid-template-columns: 1fr; }
+.inv-meta-cell, .inv-party { padding: 16px 24px; }
+.inv-table-wrap { padding: 0 24px; }
+.inv-totals { margin: 0 24px; }
+.inv-foot { padding: 20px 24px; flex-direction: column; }
+.inv-buttons { padding: 20px 24px; }
+}
+
+
+
+
+                                                        /* RECEIPT */
+.receipt-wrapper * { box-sizing: border-box; }
+
+.receipt-wrapper {
+  font-family:'DM Sans', sans-serif;
+  background: #fffaf4;
+  color: #3B2F2F;
+  padding: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid rgba(167,127,99,0.2);
+  border-radius: 0.3rem;
+}
+
+.receipt-wrapper header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.receipt-wrapper header h1 { 
+  font-family:'Cormorant Garamond', serif; 
+  font-size: 1.8rem; 
+  color: #A77F63; 
+}
+.receipt-wrapper header .status { 
+  color: #27ae60; 
+  font-weight: 600; 
+  margin-top: 0.3rem; 
+}
+
+.receipt-wrapper .receipt-section { width: 100%; }
+
+.receipt-wrapper .receipt-info p,
+.receipt-wrapper .receipt-to-from p { margin: 0.2rem 0; }
+
+.receipt-wrapper .receipt-to-from { 
+  display: flex; 
+  justify-content: space-between; 
+  margin: 1rem 0; 
+}
+
+.receipt-wrapper table.receipt-table {
+  width: 100%; 
+  border-collapse: collapse; 
+  margin: 1rem 0; 
+  display: block; 
+  overflow-x: auto;
+  font-size: 1rem;
+}
+.receipt-wrapper table.receipt-table th,
+.receipt-wrapper table.receipt-table td {
+  text-align: left; 
+  padding: 0.4rem; 
+  border-bottom: 1px solid rgba(167,127,99,0.2);
+}
+.receipt-wrapper table.receipt-table th { font-weight: 600; }
+.receipt-wrapper .receipt-total { text-align: right; font-weight: 600; margin-top: 0.5rem; }
+
+.receipt-wrapper .note {
+  font-size: 0.85rem;
+  color: #7a5c5c;
+  margin-top: 1rem;
+}
+
+.receipt-wrapper .receipt-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.receipt-wrapper .receipt-buttons button {
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(167,127,99,0.2);
+  border-radius: 0.3rem;
+  background: #fff;
+  cursor: pointer;
+}
+.receipt-wrapper .receipt-buttons button:hover {
+  background: #A77F63;
+  color: #fff;
+  border-color: #A77F63;
+}
+
+/* Print / small screen adjustments */
+@media print, (max-width: 420px) {
+  .receipt-wrapper { padding: 0.5rem; font-size: 0.8rem; }
+  .receipt-wrapper table th, .receipt-wrapper table td { padding: 0.25rem; font-size: 0.75rem; }
+}

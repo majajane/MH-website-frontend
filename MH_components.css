@@ -1,0 +1,762 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap');
+
+:root{
+   --maroon:        rgb(87, 5, 5);
+   --maroon-dark:   rgb(60, 2, 2);
+   --maroon-light:  rgb(120, 10, 10);
+   --peach:         #ffdab9;
+   --peach-soft:    #fff5ee;
+   --brown:         #7a5c5c;        /* replaces --light-color:#666 */
+   --dark:          #2c1a1a;        /* replaces --black:#333 */
+   --white:         #fff;
+   --light-bg:      #fff5ee;  
+   --border:        0.15rem solid rgba(87, 5, 5, 0.18);
+   --box-shadow:    0 0.4rem 1.6rem rgba(87, 5, 5, 0.10);
+  /* --green:   #27ae60; */
+   --orange:  #e0a800;
+   --red:     #c0392b;
+}
+
+
+*{
+   font-family: 'DM Sans', sans-serif;
+   margin:0; padding:0;
+   box-sizing: border-box;
+   outline: none; border:none;
+   text-decoration: none;
+   color:var(--dark);
+}
+
+
+*::selection{                                /*color when selecting text*/
+   background-color: peachpuff;   
+   color:white;
+}
+
+
+*::-webkit-scrollbar{
+   height: .5rem;
+   width: 0.8rem;
+}
+
+
+*::-webkit-scrollbar-track{
+   background-color: transparent;
+}
+
+
+*::-webkit-scrollbar-thumb{
+   background-color: maroon;
+}
+
+                                             /*design of register.php*/
+body{
+   background-color: rgb(238, 216, 194);
+   /* padding-bottom: 6.5rem; */
+}
+
+
+html{
+   font-size: 62.5%;
+   overflow-x: hidden;
+   scroll-behavior: smooth;
+   scroll-padding-top: 6.5rem;
+}
+
+
+section{
+   padding:3rem 2rem;
+   max-width: 1200px;
+   margin:0 auto;
+}
+
+
+
+
+
+
+.message {
+    font-size: 16px;          
+    font-weight: bold;         
+    color: black;         
+    background: #f0f0f0;    
+    padding: 12px 15px;        
+    border-radius: 6px;        
+    margin: 10px 0;           
+    display: flex;             
+    align-items: center;
+    font-family: 'DM Sans', sans-serif; 
+}
+
+.message span {
+    flex: 1;                
+}
+
+.message i {
+    cursor: pointer;          /* pointer for the X icon */
+    margin-left: 10px;
+    color: maroon;           /* red X icon */
+}
+
+
+
+h1, h2 {
+   font-family: 'Cormorant Garamond', serif;
+}
+
+
+                                             /*design of buttons under register.php*/
+.btn,
+.delete-btn,
+.option-btn{
+   display: block;
+   width: 100%;
+   margin-top: 1rem;
+   border-radius: 0.6rem;
+   color: cornsilk;
+   font-size: 2rem;
+   font-family: 'DM Sans', sans-serif;
+   padding:1.3rem 3rem;
+   text-transform: capitalize;
+   cursor: pointer;
+   text-align: center;
+}
+
+                                             /*color of button*/
+.btn{
+   background-color: rgb(87, 5, 5);       /*update profile*/
+}
+
+
+.delete-btn{
+   background-color: darkred;             /*logout*/
+}
+
+
+.option-btn{
+   background-color: rgba(162, 107, 107, 0.8);  /*login & reg now*/
+}
+
+
+.btn:hover,
+.delete-btn:hover,
+.option-btn:hover{
+   background-color: black;
+}
+
+
+
+.flex-btn{
+   display: flex;
+   flex-wrap: wrap;
+   gap:1rem;
+}
+
+
+.flex-btn > *{
+   flex:1;
+}
+
+
+.title{
+   font-family: 'Cormorant Garamond', serif;
+   text-align: center;
+   margin-bottom: 2rem;
+   text-transform: uppercase;
+   color: var(--maroon);
+   font-size: 3.5rem;
+   font-weight: 700;
+   letter-spacing: 0.05em;
+}
+
+
+
+
+.empty{
+   padding:1.5rem;
+   background: var(--white);
+   color:var(--red);
+   border-radius: 0.6rem;
+   border:var(--border);
+   font-size: 2rem;
+   text-align: center;
+   box-shadow: var(--box-shadow);
+   text-transform: capitalize;
+}
+
+
+@keyframes fadeIn {
+   0%{
+      transform: translateY(1rem);
+      opacity: 0;
+   }
+}
+
+
+
+                                             /*design of forms under register.php*/
+.form-container{
+   min-height: 100vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+
+.form-container form{                       /*container box or register now*/
+   width: 50rem;
+   background-color: rgba(217, 182, 159, 0.8);     /*rgb(255, 237, 222)*/
+   border-radius: .5rem;
+   box-shadow: var(--box-shadow);
+   border:var(--border);
+   text-align: center;
+   padding:3rem;
+}
+
+
+.form-container form h3{                   /*register now heading*/
+   font-family: 'Cormorant Garamond', serif; 
+   font-size: 3rem;
+   font-weight: 700;
+   color:brown;
+   margin-bottom: 1rem;
+   text-transform: uppercase;
+   letter-spacing: 0.04em;
+}
+
+
+.form-container form .box{                /*container box or register now*/
+   width: 100%;
+   margin:1rem 0;
+   border-radius: 0.5rem;
+   border:var(--border);
+   padding:1.2rem 1.4rem;
+   font-size: 1.7rem;
+   color:black;
+   background-color:white;
+   transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-container p{                       /*container box or register now*/
+   font-size: 1.25rem;   
+   padding: 1rem;
+}
+
+
+.icons {
+  position: relative;
+  display: inline-block;
+}
+
+                                             /*design of header under admin page*/
+.header{
+   background: rgba(255, 245, 238, 0.97);
+   border-bottom: var(--border);
+   position: sticky;
+   top:0; left:0; right:0;
+   z-index: 1000;
+   box-shadow: var(--box-shadow);            /*shadow effect of header*/
+}
+
+
+
+.header .flex{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 1.5rem 2rem;
+   margin: 0 auto;
+   width: 100%;          
+   max-width: 1200px;    
+   box-sizing: border-box;
+   position: relative;
+}
+
+
+.header .flex .logo{
+   font-family: 'Cormorant Garamond', serif;
+   font-size: 2.6rem;
+   font-weight: 700;
+   color: var(--maroon);
+   letter-spacing: 0.03em;
+}
+
+
+.header .flex .logo span{
+   color: rgba(201, 163, 153, 0.9);
+   font-family: 'Cormorant Garamond', serif;
+   font-weight: 700;
+}
+
+
+.header .flex .navbar a{
+   margin: 0 2rem;
+   padding: 2.5rem;
+   font-size: 1.7rem;
+   font-weight: 500;
+   color: var(--brown);
+   transition: color 0.2s;             /*admin header text*/
+}
+
+
+.header .flex .navbar a:hover{               /*admin header text when hovered*/
+   text-decoration: none;
+   color:maroon;
+   border-bottom: 2px solid var(--maroon);
+}
+
+
+.header .flex .icons > *{
+   font-size: 2.3rem;
+   color:peachpuff;
+   cursor: pointer;
+   margin-left: 1.5rem;
+   transition: color 0.2s;
+}
+
+
+.header .flex .icons > *:hover{
+   color:maroon;
+}
+
+
+
+
+#user-btn {
+  display: inline-block;       /* keep icons side by side */
+  cursor: pointer;
+  font-size: 2rem;
+  color: var(--maroon);
+  position: relative;
+  z-index: 1100;         /* on top of other elements */
+  margin-left: 1rem;
+}
+
+
+#menu-btn {
+   display: none; 
+}
+
+.header .flex .profile img{
+   height: 13rem;
+   width: 15rem;
+   margin-bottom: 1rem;
+   border-radius: 50%;
+   object-fit: cover;
+   border: 3px solid var(--peach);
+}
+
+
+.header .flex .profile p {
+   padding: 0.5rem 0;
+   font-size: 1.4rem;
+   color: var(--brown);
+}
+
+.header .flex .profile .btn,
+.header .flex .profile .delete-btn,
+.header .flex .profile .option-btn {
+   display: block;
+   width: 100%;
+   margin: 0.3rem 0;
+   padding: 0.5rem;
+   font-size: 1rem;
+   border-radius: 0.5rem;
+   text-decoration: none;
+}
+
+
+                                             /**profile update**/
+.update-profile form{
+   max-width: 70rem;
+   margin: 0 auto;
+   background-color: var(--white);
+   box-shadow: var(--box-shadow);
+   border:var(--border);
+   border-radius: 1rem;
+   padding:3rem;
+   text-align: center;
+}
+
+
+.update-profile form .flex{
+   display: flex;
+   gap:1.5rem;
+   justify-content: space-between;
+}
+
+
+.update-profile form img{
+   height: 20rem;
+   width: 20rem;
+   margin-bottom: 1rem;
+   border-radius: 50%;
+   object-fit: cover;
+   border: 3px solid var(--peach);  
+}
+
+
+.update-profile form .inputBox{
+   text-align: left;
+   width: 49%;
+}
+
+
+.update-profile form .inputBox span{
+   display: block;
+   padding-top: 1rem;
+   font-size: 1.8rem;
+   color:black;
+}
+
+
+.update-profile form .inputBox .box{
+   width: 100%;
+   padding:1.2rem 1.4rem;
+   font-size: 1.8rem;
+   color:black;
+   border:var(--border);
+   border-radius: .5rem;
+   margin:1rem 0;
+   background-color: rgb(255, 255, 240);
+}
+
+
+
+
+
+
+
+                                            /*info design*/
+.hero-info {
+   background:rgb(87, 5, 5); 
+   color: var(--peach); 
+   padding: 35px 24px 35px; 
+   text-align: center; 
+}
+
+
+.hero-info p {
+   font-size: 1.5rem; 
+   letter-spacing: 4px; 
+   text-transform: uppercase; 
+   color: rgba(255,218,185,0.55); 
+   margin-bottom: 10px; 
+}
+
+.hero-info h1 {
+   color: rgba(201, 163, 153, 0.9);
+   font-family: 'Cormorant Garamond', serif; 
+   font-size: clamp(2.2rem, 5vw, 3.4rem); 
+   font-weight: 700; 
+   line-height: 1.1; 
+}
+
+
+.tagline {
+   text-align: center; 
+   padding: 2rem 1rem 1rem;                  /* spacing around tagline */
+   border-top: var(--border); 
+   font-style: italic; 
+   color: var(--mid); 
+}
+
+
+.list-clean { 
+   list-style: none;                         /* remove bullets */
+   padding: 0;                               /* remove default padding */
+   margin: 0;                                /* remove default margin */
+}
+
+
+.list-item { 
+   display: flex;                            /* flex for icon + text */
+   gap: 18px;                                /* space between icon and text */
+   align-items: flex-start;                  /* align items at top */
+   padding: 18px 0;                          /* vertical spacing */
+   border-bottom: var(--border);             /* bottom separator line */
+}
+
+
+.list-item:last-child { 
+   border-bottom: none; 
+}
+
+
+.list-icon {
+   width: 40px;                              /* fixed width */
+   height: 40px;                             /* fixed height */
+   min-width: 40px;                          /* ensure width does not shrink */
+   background: var(--soft);                  /* light bg for icon */
+   border-radius: 50%;                       /* make it circular */
+   display: flex; 
+   align-items: center;                      /* vertically center icon */
+   justify-content: center;  
+   margin-top: 2px;
+   color: var(--maroon);                     /* icon color */
+}
+
+
+.list-text h3 {
+   font-family: 'Cormorant Garamond', serif; 
+   font-size: 2.75rem; 
+   font-weight: 600;                         /* semi-bold */
+   color: var(--maroon); 
+   margin-bottom: 4px;
+}
+
+
+.list-text p {
+   font-size: 1.2rem; 
+   color: var(--mid); 
+   line-height: 1.7; 
+}
+
+
+.list-text a { 
+   color: var(--maroon);
+   font-weight: 500; 
+   text-decoration: underline; 
+}
+
+
+
+
+
+
+
+                                              /*footer design*/
+.footer{
+   background-color: white;
+   border-top: var(--border);   
+}
+
+
+.footer .box-container{
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
+   gap:2.5rem;
+   align-items: flex-start;
+}
+
+
+.footer .box-container .box h3{
+   text-transform: uppercase;
+   color:maroon;
+   margin-bottom: 2rem;
+   font-size: 2rem;
+   font-weight: 700;
+   letter-spacing: 0.05em;
+}
+
+
+.footer .box-container .box a,
+.footer .box-container .box p{
+   display: block;
+   padding:1.3rem 0;
+   font-size: 1.6rem;
+   color:black;
+}
+
+
+.footer .box-container .box a i,
+.footer .box-container .box p i{
+   color:brown;
+   padding-right: 1rem;
+}
+
+
+.footer .box-container .box a:hover{
+   text-decoration: underline;
+   color:maroon;
+}
+
+
+.footer .credit{
+   margin-top: 2rem;
+   padding: 2rem 1.5rem;
+   padding-bottom: 2.5rem;
+   line-height: 1.5;
+   border-top: var(--border);
+   text-align: center;
+   font-family: 'Cormorant Garamond', serif;
+   font-size: 1.8rem;
+   font-style: italic;
+   color: maroon;
+}
+
+
+.footer .credit span{
+   color:brown;
+}
+
+
+.header .icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;                             
+    position: relative;        
+    flex-shrink: 0;         
+}
+
+
+
+.header .flex .profile img{
+   height: 13rem;
+   width: 15rem;
+   margin-bottom: 1rem;
+   border-radius: 50%;
+   object-fit: cover;
+   border: 3px solid var(--peach);
+}
+
+
+
+.header .icons .profile {
+    display: none;
+    position: absolute;
+    top: 3.5rem;       /* below icons */
+    right: 0;          /* aligned to right edge of icons */
+    width: 220px;      /* fixed width */
+    background-color: var(--white);
+    padding: 1rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 1000;
+    text-align: center;
+}
+
+
+.header .icons .profile.active {
+  display: block;
+  pointer-events: auto; 
+}
+
+                                          /*stacked vertically */
+.header .icons .profile a.btn,
+.header .icons .profile a.delete-btn {
+  display: block;
+  margin-bottom: 0.6rem;
+  padding: 0.6rem 0;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+}
+
+
+.header .icons .profile a.btn {
+  background-color: #5a0000;   
+}
+
+.header .icons .profile a.delete-btn {
+  background-color: #8b0000;  
+  margin-bottom: 0.6rem;       
+}
+
+
+.header .icons .profile .flex-btn {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+                                          /* Login/Register buttons */
+.header .icons .profile .flex-btn a.option-btn {
+  flex: 1;
+  background-color: #b58a8a;  
+  color: white;
+  padding: 0.6rem 0;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  user-select: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.header .icons .profile a.btn:hover,
+.header .icons .profile a.delete-btn:hover {
+    background-color: black; 
+}
+
+.header .icons .profile .flex-btn a.option-btn:hover {
+    background-color: maroon; 
+}
+
+
+
+                                           /*to fix setup kahit iadjust screen*/
+@media (max-width:991px){
+   html{
+      font-size: 55%;
+   }
+}
+
+
+@media (max-width:768px){
+   #menu-btn{
+      display: inline-block;                 /*menu on mobile*/
+   }
+
+
+   .header .flex .navbar{                    /*navbar when hamburger is clicked*/
+      display: flex; 
+      border-top: var(--border);
+      border-bottom: var(--border);
+      background-color: rgb(255, 230, 190);
+      position: absolute;
+      top:100%; left:0; right:0;
+      transition: .2s linear;
+      clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+   }
+
+
+   .header .flex .navbar.active{
+      display: block; 
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+   }
+
+
+   .header .flex .navbar a{
+      display: block;
+      margin:2rem;  
+      color: maroon;
+   }
+
+  
+
+   .update-profile form .flex{
+      flex-wrap: wrap;
+      gap:0;
+   }
+
+
+   .update-profile form .flex .inputBox{
+      width: 100%;
+   }
+
+
+}
+
+
+@media (max-width:450px){
+
+
+   html{
+      font-size: 50%;
+   }
+
+
+   .flex-btn{
+      flex-flow: column;
+      gap:0;
+   }
+
+
+   .title{
+      font-size: 3rem;
+   }
+   
+}
+

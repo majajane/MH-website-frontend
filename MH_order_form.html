@@ -1,0 +1,192 @@
+<!-- 
+ 
+
+<?php
+@include 'MH_configuration.php';
+session_start();
+
+$user_id = $_SESSION['user_id'];
+if(!isset($user_id)){
+   header('location:MH_login.php');
+   exit;
+}
+
+// used in invoice
+$select_user = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
+$select_user->execute([$user_id]);
+$fetch_user = $select_user->fetch(PDO::FETCH_ASSOC);
+
+if(isset($_POST['order'])){
+
+   // from form 
+   $fblink     = filter_var($_POST['fblink'],    FILTER_SANITIZE_URL);
+   $contactnum = filter_var($_POST['number'],    FILTER_SANITIZE_NUMBER_INT);
+   $batchcode  = filter_var($_POST['batchcode'], FILTER_SANITIZE_STRING);
+   $dressnum   = filter_var($_POST['dressnum'],  FILTER_SANITIZE_STRING);
+   $qty        = (int) $_POST['qty'];
+   $method     = filter_var($_POST['method'],    FILTER_SANITIZE_STRING);
+   $checkout   = filter_var($_POST['checkout'],  FILTER_SANITIZE_STRING);
+
+   // from user account
+   $name  = $fetch_user['name'];
+   $email = $fetch_user['email'];
+
+   // look up product by batchcode + dressnum 
+   $select_product = $conn->prepare("SELECT * FROM `products` WHERE batchcode = ? AND dressnum = ?");
+   $select_product->execute([$batchcode, $dressnum]);
+
+
+
+   if($select_product->rowCount() > 0){
+      $p         = $select_product->fetch(PDO::FETCH_ASSOC);
+
+      $pid         = (int) $p['id'];           // get product ID
+      $album       = $p['album'];              
+      $price       = (float) $p['price'];
+      $current_qty = (int) $p['qty'];          // stock available
+      $total       = $price * $qty;
+
+   if($qty > $current_qty){
+      $message[] = "Only $current_qty item(s) available for Dress No. $dressnum in Batch $batchcode.";
+   } else {
+
+      $insert_order = $conn->prepare("
+         INSERT INTO `orders`
+            (user_id, name, email, contactnum, fblink, batchcode, dressnum, album, qty, price, total, method, checkout, payment_status)
+         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'pending')
+      ");
+      $insert_order->execute([
+         $user_id, $name, $email, $contactnum, $fblink,
+         $batchcode, $dressnum, $album, $qty, $price, $total,
+         $method, $checkout
+      ]);
+
+      if($insert_order){
+         $new_id    = $conn->lastInsertId();
+         $invoiceno = 'MH-' . date('Y') . '-' . str_pad($new_id, 5, '0', STR_PAD_LEFT);
+         $conn->prepare("UPDATE `orders` SET invoiceno = ? WHERE id = ?")->execute([$invoiceno, $new_id]);
+
+      $new_qty = $current_qty - $qty;
+      $update_qty = $conn->prepare("UPDATE `products` SET qty = ? WHERE id = ?");
+      $update_qty->execute([$new_qty, $pid]);
+
+         header('location:MH_thankyou.php?order_id=' . $new_id);
+         exit;
+      }
+   }
+
+   } else {
+      $message[] = 'Batch code or dress number not found. Please double-check and try again.';
+   }
+}
+?>
+
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Home page</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="MH_style.css">
+   <link rel="icon" href="images/profilepic.png" type="images/x-icon">
+   
+</head>
+<body>
+
+
+<!--     
+   
+<?php include 'MH_header.php';?>    
+
+<?php
+if(isset($message)){
+   foreach($message as $msg){
+      echo '<div class="message"><span>'.$msg.'</span><i class="fas fa-times" onclick="this.parentElement.remove();"></i></div>';
+   }
+}
+?>
+
+
+-->
+
+
+<section class="form-container">
+   <form method="POST">
+      <h3>Place Your Order</h3>
+
+
+      <div class="flex">
+         <!--facebook link of receiver-->
+         <div class="inputBox">
+            <span>Facebook Link :</span>
+            <input type="url" name="fblink" placeholder="Enter your Facebook profile link" class="box" required>
+         </div>
+
+         <!--number of receiver-->
+         <div class="inputBox">
+            <span>Contact Number :</span>
+            <input type="number" name="number" placeholder="Enter your number (eg. 09901236789)" class="box"  pattern="[0-9]{11}" title="11-digit phone number" required>
+         </div>
+         
+          <!--must be in "1-n" or "1-nn" format only where n is a number-->
+         <div class="inputBox">
+            <span>Batch Code :</span>
+            <input type="number" name="batchcode" placeholder="Enter the given batch code (eg. 1-17)" pattern="[0-9]+-[0-9]+" class="box" required>
+         </div>
+
+          <!--must be in "dress num n" or "nnn"  format only where n is a number-->
+         <div class="inputBox">
+            <span>Dress no. :</span>
+            <input type="number" name="dressnum" placeholder="Enter the given dress no. (eg. 1920)" class="box" min="1"  required>
+         </div>
+
+         <!--number of order-->
+         <div class="inputBox">
+            <span>Qty :</span>
+            <input type="number" name="qty" placeholder="Enter quantity (eg. 20)" class="box" required>
+         </div>
+
+         <!--payment method want-->
+         <div class="inputBox">
+            <span>Payment Method :</span>
+            <select name="method" class="box" required>
+               <option value="gcash">Gcash</option>
+               <option value="bpi">BPI</option>
+               <option value="maribank">MariBank</option>
+            </select>
+         </div>
+
+      <!--where to checkout, we will send checkout link to you-->
+          <div class="inputBox">
+            <span>Checkout Link :</span>
+            <select name="method" class="box" required>
+               <option value="shopee">Shopee</option>
+               <option value="tiktokshop">Tiktok Shop</option>
+               <option value="tiktokshop">Lalamove</option>
+               <option value="tiktokshop">Direct J&T</option>
+            </select>
+         </div>
+
+
+      <input type="submit" name="order" class="btn" value="Place order">
+
+
+   </form>
+
+
+</section>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
+
+

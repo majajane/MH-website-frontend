@@ -1,0 +1,188 @@
+<!-- 
+ 
+<?php
+@include 'MH_configuration.php';
+session_start();
+
+$admin_id = $_SESSION['admin_id'] ?? null;
+$user_id  = $_SESSION['user_id']  ?? null;
+
+if(!$admin_id && !$user_id){
+   header('location:MH_login.php');
+   exit;
+}
+
+$order_id = isset($_GET['order_id']) ? (int)$_GET['order_id'] : 0;
+if(!$order_id){ die('Invalid order.'); }
+
+// Fetch order
+$select_order = $conn->prepare("SELECT * FROM `orders` WHERE id = ?");
+$select_order->execute([$order_id]);
+
+if($select_order->rowCount() == 0){ die('Order not found.'); }
+
+$fetch_orders = $select_order->fetch(PDO::FETCH_ASSOC);
+
+// Customers can only see their own invoice
+if($user_id && (int)$fetch_orders'user_id'] !== (int)$user_id){
+   die('Access denied.');
+}
+?>
+
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - Mi Hermana</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="MH_invoice.css">
+    <link rel="icon" href="images/profilepic.png" type="images/x-icon">
+
+</head>
+<body>
+
+<div class="invoice-wrapper">
+    <div class="invoice">
+
+        <div class="inv-header">
+            <div class="inv-brand">
+                <h1>Mi Hermana</h1>
+                <p>Never Out of Style</p>
+            </div>
+            <div class="inv-title-block">
+                <h2>Invoice</h2>
+                <div class="inv-no">
+                    #<?= 'MH-' . str_pad($order['id'], 6, '0', STR_PAD_LEFT) ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- dates -->
+        <div class="inv-meta">
+            <div class="inv-meta-cell">
+                <label>Order Date</label>
+                <span><?= date('F j, Y', strtotime($order['placed_on'])) ?></span>
+            </div>
+            <div class="inv-meta-cell">
+                <label>Invoice Date</label>
+                <span><?= date('F j, Y') ?></span> 
+            </div>
+        </div>
+
+  
+        <div class="inv-parties">
+            <!-- invoiced to -->
+            <div class="inv-party">
+                <label>Invoiced To</label>
+                <p class="name"><?= htmlspecialchars($order['name']) ?></p>
+                <div class="contact-row">
+                    <i class="fas fa-envelope"></i>
+                    <?= htmlspecialchars($order['email']) ?>
+                </div>
+                <div class="contact-row">
+                    <i class="fas fa-phone"></i>
+                    <?= htmlspecialchars($order['number']) ?>
+                </div>
+            </div>
+            <!-- pay to -->
+            <div class="inv-party">
+                <label>Pay To</label>
+                <p class="name">Mi Hermana</p>
+                <div class="contact-row">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Pasig, City, Philippines
+                </div>
+                <div class="contact-row">
+                    <i class="fab fa-facebook"></i>
+                    facebook.com/mi.hermanaa
+                </div>
+                <div class="contact-row">
+                    <i class="fab fa-tiktok"></i>
+                    @mi.hermanaa
+                </div>
+            </div>
+        </div>
+
+ 
+        <div class="inv-table-wrap" style="padding-top:28px;">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Item</td>
+                        <td>Batch Code</td>
+                        <td class="td-center">Qty</td>
+                        <td class="td-right">Price / Item</td>
+                        <td class="td-right">Amount</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="td-item">
+                            <strong><?= htmlspecialchars($order['product_dressnum']) ?></strong>
+                        </td>
+                        <td>
+                            <span class="td-batch"><?= htmlspecialchars($order['product_batchcode']) ?></span>
+                        </td>
+                        <td class="td-center"><?= (int)$order['total_products'] ?></td>
+                        <td class="td-right">₱<?= number_format($order['product_price'], 2) ?></td>
+                        <td class="td-right">₱<?= number_format($order['total_price'], 2) ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="inv-totals">
+            <div class="totals-block">
+                <div class="total-row">
+                    <span class="label">Payment Method</span>
+                    <span class="value"><?= htmlspecialchars($order['method']) ?></span>
+                </div>
+                <div class="total-row">
+                    <span class="label">Total</span>
+                    <span class="value">₱<?= number_format($order['total_price'], 2) ?></span>
+                </div>
+            </div>
+        </div>
+
+     
+        <div class="inv-foot">
+            <p class="inv-note">
+                <strong>Note:</strong> This is a computer-generated receipt and does not require a physical signature.
+                For questions, message us on Facebook Messenger.
+            </p>
+            <p class="inv-note" style="text-align:right;">
+                Order status: <strong style="color:var(--maroon);"><?= ucfirst($order['payment_status']) ?></strong>
+            </p>
+        </div>
+
+
+        <div class="inv-buttons">
+            <button class="inv-btn primary" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Print
+            </button>
+            <button class="inv-btn" onclick="downloadInvoice()">
+                <i class="fa-solid fa-download"></i> Download PDF
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function downloadInvoice() {
+    window.print();
+}
+</script>
+
+</body>
+</html>

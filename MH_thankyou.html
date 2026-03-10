@@ -1,0 +1,131 @@
+<!--
+
+<?php
+@include 'MH_configuration.php';
+session_start();
+
+
+$user_id = $_SESSION['user_id'];
+if(!isset($user_id)){
+   header('location:MH_login.php');
+   exit;
+}
+
+$order_id = isset($_GET['order_id']) ? (int)$_GET['order_id'] : 0;
+if(!$order_id){ header('location:MH_home.php'); exit; }
+
+// Fetch order — only allow the user who placed it
+$select_order = $conn->prepare("SELECT * FROM `orders` WHERE id = ? AND user_id = ?");
+$select_order->execute([$order_id, $user_id]);
+
+if($select_order->rowCount() == 0){
+   header('location:MH_home.php');
+   exit;
+}
+
+$order = $select_order->fetch(PDO::FETCH_ASSOC);
+?>
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Order Placed - Mi Hermana</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="MH_style.css">
+   <link rel="icon" href="images/profilepic.png" type="images/x-icon">
+
+   </head>
+<body>
+
+<!--        <?php include 'MH_header.php'; ?>     -->
+
+<div class="thankyou-container">
+
+   <div class="thankyou-icon"><i class="fas fa-check-circle"></i></div>
+   <h2>Thank You, <?= htmlspecialchars($order['name']); ?>!</h2>
+   <p>Your order has been received. Please settle your payment using the details below.</p>
+   <p style="font-size:1.35rem; color:#999;">Invoice No: <strong style="color:rgb(87,5,5);"><?= htmlspecialchars($order['invoiceno']); ?></strong></p>
+
+   <!-- order sum -->
+   <div class="order-summary">
+      <h3><i class="fas fa-receipt"></i> Order Summary</h3>
+      <div class="summary-row">
+         <span class="label">Invoice No.</span>
+         <span class="value"><?= htmlspecialchars($order['invoiceno']); ?></span>
+      </div>
+      <div class="summary-row">
+         <span class="label">Album</span>
+         <span class="value"><?= htmlspecialchars($order['album']); ?></span>
+      </div>
+      <div class="summary-row">
+         <span class="label">Batch Code</span>
+         <span class="value"><?= htmlspecialchars($order['batchcode']); ?></span>
+      </div>
+      <div class="summary-row">
+         <span class="label">Dress No.</span>
+         <span class="value"><?= htmlspecialchars($order['dressnum']); ?></span>
+      </div>
+      <div class="summary-row">
+         <span class="label">Qty</span>
+         <span class="value"><?= htmlspecialchars($order['qty']); ?></span>
+      </div>
+      <div class="summary-row">
+         <span class="label">Price per item</span>
+         <span class="value">₱<?= number_format($order['price'], 2); ?></span>
+      </div>
+      <div class="summary-row total">
+         <span class="label">Total</span>
+         <span class="value">₱<?= number_format($order['total'], 2); ?></span>
+      </div>
+      <div class="summary-row">
+         <span class="label">Payment Method</span>
+         <span class="value"><?= htmlspecialchars($order['method']); ?></span>
+      </div>
+      <div class="summary-row">
+         <span class="label">Checkout via</span>
+         <span class="value"><?= htmlspecialchars($order['checkout']); ?></span>
+      </div>
+   </div>
+
+   <!-- bank deets -->
+   <div class="bank-box">
+      <h3><i class="fas fa-money-bill-wave"></i> Payment Details</h3>
+
+      <img src="images/bank_details.jpg" alt="Bank Payment Details" class="bank-details-img"
+           onerror="this.style.display='none'; document.getElementById('bank-text-fallback').style.display='block';">
+      <div id="bank-text-fallback" class="bank-text" style="display:none;">
+         <strong>GCash</strong><br>
+         Main GCash Number: <strong>0917 511 2995 (Judith Malto)</strong><br>
+         Alt. GCash Number: <strong>0962 539 7533 (AL*HLE*AF)</strong><br><br>
+         <strong>Bank Account Name:</strong> Judith Malto<br>
+         BPI Account Number: <strong>3009 192 661</strong><br>
+         MariBank Account Number: <strong>1042 8590 914</strong><br>
+      </div>
+   </div>
+
+   <!-- notice -->
+   <div class="notice-box">
+      <strong>📋 What happens next?</strong><br>
+      1. Your invoice will be sent to you shortly.<br>
+      2. Settle your payment using the details above.<br>
+      3. Send your proof of payment to our <a href="https://www.facebook.com/mi.hermana.pa" target="_blank" style="color:rgb(87,5,5);">Facebook page</a>.<br>
+      4. We will update you once payment is confirmed. ✅
+   </div>
+
+   <a href="MH_home.html" class="btn-home"><i class="fas fa-home"></i>  Back to Home</a>
+
+</div>
+
+<?php include 'MH_footer.php'; ?>
+
+<script src="script.js"></script>
+
+</body>
+</html>

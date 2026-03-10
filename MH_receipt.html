@@ -1,0 +1,126 @@
+<!--
+
+<?php
+@include 'MH_configuration.php';
+session_start();
+
+$admin_id = $_SESSION['admin_id'] ?? null;
+$user_id  = $_SESSION['user_id']  ?? null;
+
+if(!$admin_id && !$user_id){
+   header('location:MH_login.php');
+   exit;
+}
+
+$order_id = isset($_GET['order_id']) ? (int)$_GET['order_id'] : 0;
+if(!$order_id){ die('Invalid order.'); }
+
+$select_order = $conn->prepare("SELECT * FROM `orders` WHERE id = ?");
+$select_order->execute([$order_id]);
+
+if($select_order->rowCount() == 0){ die('Order not found.'); }
+
+$fetch_orders[ = $select_order->fetch(PDO::FETCH_ASSOC);
+
+// Only show receipt if payment is confirmed
+if($fetch_orders['payment_status'] !== 'completed'){
+   die('Receipt is not available yet. Payment is still ' . htmlspecialchars($o['payment_status']) . '.');
+}
+
+// viewable own receipt 
+if($user_id && (int)$fetch_orders['user_id'] !== (int)$user_id){
+   die('Access denied.');
+}
+?>         
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt <?= htmlspecialchars($o['invoiceno']); ?></title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="MH_invoice.css">
+    <link rel="icon" href="images/profilepic.png" type="images/x-icon">
+
+</head>
+<body>
+
+
+ <div class="receipt-wrapper">
+  <header>
+    <h1>Receipt</h1>
+    <div class="status">✔ Payment Complete</div>
+  </header>
+
+  <section class="receipt-section">
+    <div class="receipt-info">
+      <p><strong>Date:</strong> <?= date('m/d/Y'); ?></p>
+      <p><strong>Invoice No:</strong> <?= htmlspecialchars($o['invoiceno']); ?></p>
+    </div>
+
+    <div class="receipt-to-from">
+      <div class="from">
+        <p><strong>From:</strong></p>
+        <p>Mi Hermana</p>
+        <p>Pasig City, Philippines</p>
+        <p>contact@mihermana.com</p>
+      </div>
+      <div class="to">
+        <p><strong>Received by:</strong></p>
+        <p><?= htmlspecialchars($o['name']); ?></p>
+      </div>
+    </div>
+
+    <table class="receipt-table">
+      <thead>
+        <tr>
+          <th>Album</th>
+          <th>Batch Code</th>
+          <th>Dress No.</th>
+          <th>Price</th>
+          <th>QTY</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><?= htmlspecialchars($o['album']); ?></td>
+          <td><?= htmlspecialchars($o['batchcode']); ?></td>
+          <td><?= htmlspecialchars($o['dressnum']); ?></td>
+          <td>₱<?= number_format($o['price'], 2); ?></td>
+          <td><?= (int)$o['qty']; ?></td>
+          <td>₱<?= number_format($o['total'], 2); ?></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="receipt-total">
+      <p><strong>Total Paid:</strong> ₱<?= number_format($o['total'], 2); ?></p>
+    </div>
+
+    <p class="note">
+      NOTE: This is a computer-generated receipt and does not require a physical signature.
+    </p>
+  </section>
+
+  <div class="receipt-buttons">
+    <button onclick="window.print()">Print</button>
+    <button onclick="window.print()">Download</button>
+  </div>
+</div>
+
+
+</body>
+</html>
+
+
+
+
+
+

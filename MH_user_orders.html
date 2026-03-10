@@ -1,0 +1,165 @@
+<!--
+
+<?php
+@include 'MH_configuration.php';
+session_start();
+
+$user_id = $_SESSION['user_id'];
+
+if(!isset($user_id)){
+   header('location:MH_login.php');
+}
+   ?>
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Orders</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+   <link rel="stylesheet" href="MH_style.css">
+   <link rel="icon" href="images/profilepic.png" type="images/x-icon">
+   
+</head>
+<body>
+   
+
+<!-- 
+
+
+   <?php include 'MH_header.php'; ?>
+
+-->
+
+<section class="user-orders">
+   <h1 class="title">My Orders</h1>
+
+   <div class="orders-container">
+
+<!-- 
+      
+   <?php
+      $select_orders = $conn->prepare("SELECT * FROM `orders` WHERE user_id = ? ORDER BY placed_on DESC");
+      $select_orders->execute([$user_id]);
+
+      if($select_orders->rowCount() > 0){
+         while($order = $select_orders->fetch(PDO::FETCH_ASSOC)){
+            // Status class
+            $status_class = 'status-' . strtolower($order['payment_status']);
+   ?>
+
+              
+-->
+
+      <div class="order-card">
+         <!-- main info shown -->
+         <div class="order-header">
+            <div class="order-main-info">
+               <div class="order-dress">
+                  Dress No. <?= htmlspecialchars($order['dressnum']); ?>
+               </div>
+               <div class="order-meta">
+                  <span><i class="fas fa-credit-card"></i> <?= htmlspecialchars($order['method']); ?></span>
+                  <span><i class="fas fa-shopping-cart"></i> <?= htmlspecialchars($order['checkout']); ?></span>
+               </div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-end;">
+               <div class="status-badge <?= $status_class; ?>">
+                  <?= htmlspecialchars($order['payment_status']); ?>
+               </div>
+               <button class="toggle-btn" onclick="toggleDetails(this)">
+                  See More <i class="fas fa-chevron-down"></i>
+               </button>
+            </div>
+         </div>
+
+         <!-- see more -->
+         <div class="order-details">
+            <div class="order-details-inner">
+               <div class="detail-row">
+                  <span class="detail-label">Order Date:</span>
+                  <span class="detail-value"><?= date('M d, Y', strtotime($order['placed_on'])); ?></span>
+               </div>
+               <div class="detail-row">
+                  <span class="detail-label">Batch Code:</span>
+                  <span class="detail-value"><?= htmlspecialchars($order['batchcode']); ?></span>
+               </div>
+               <div class="detail-row">
+                  <span class="detail-label">Price per Item:</span>
+                  <span class="detail-value">₱<?= number_format($order['price'], 2); ?></span>
+               </div>
+               <div class="detail-row">
+                  <span class="detail-label">Quantity:</span>
+                  <span class="detail-value"><?= (int)$order['qty']; ?></span>
+               </div>
+               <div class="detail-row" style="border-top:2px solid var(--maroon); margin-top:8px; padding-top:12px;">
+                  <span class="detail-label" style="font-family:var(--font-display); font-size:1.1rem; color:var(--maroon);">Total Amount:</span>
+                  <span class="detail-value" style="font-family:var(--font-display); font-size:1.3rem; font-weight:700; color:var(--maroon);">₱<?= number_format($order['total'], 2); ?></span>
+               </div>
+            </div>
+         </div>
+      </div>
+
+
+<!--
+
+   <?php
+         }
+      } else {
+   ?>
+
+-->
+
+      <div class="empty-orders">
+         <i class="fas fa-shopping-bag"></i>
+         <p>You haven't placed any orders yet.</p>
+         <a href="MH_order_form.html" class="btn">Place your first Order</a>
+      </div>
+
+<!--
+
+   <?php
+      }
+   ?>
+
+-->
+
+
+   </div>
+</section>
+
+<!--
+
+<?php include 'MH_footer.php'; ?>
+
+-->
+
+<script>
+function toggleDetails(btn) {
+   const card = btn.closest('.order-card');
+   const details = card.querySelector('.order-details');
+   
+   // Toggle expanded class
+   details.classList.toggle('expanded');
+   btn.classList.toggle('active');
+   
+   // Change button text
+   if(details.classList.contains('expanded')){
+      btn.innerHTML = 'See Less <i class="fas fa-chevron-down"></i>';
+   } else {
+      btn.innerHTML = 'See More <i class="fas fa-chevron-down"></i>';
+   }
+}
+
+
+</script>
+
+
+</body>
+</html>

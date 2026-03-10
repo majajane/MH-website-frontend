@@ -1,0 +1,99 @@
+<?php
+@include 'MH_configuration.php';
+session_start();
+
+$user_id = $_SESSION['user_id'];
+
+if(!isset($user_id)){
+   header('location:MH_login.php');
+   exit();
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home page</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="MH_style.css">
+  <link rel="icon" href="images/profilepic.png" type="images/x-icon">
+
+</head>
+<body>
+   
+
+<!--remove as a comment:      <?php include 'MH_header.php';?>     -->
+
+<section id="showcase"></section>
+
+<div class="hero-cta">
+   <a href="MH_order_form.html" class="btn btn-primary">Shop Now</a>
+</div>
+
+<section id="content-area">
+
+   <section id="main">
+   <h1>
+   <i class="fas fa-tshirt welcome-icon"></i>
+   Welcome to Mi Hermana
+   </h1>
+   <p>Discover timeless fashion and exclusive styles. We deliver quality and passion in every piece. Remember, all sales are final — no keep items, no refunds. Expect slight shipping delays for orders with incomplete details. After ordering, your invoice will be emailed and payment confirmation via Messenger starts the process. Tiktok/Shopee checkout links will be sent through Messenger.</p>
+   </section>
+
+   <section id="sidebar">
+   <a href="MH_order_form.html" class="btn">Order Now</a>
+   <a href="https://www.facebook.com/mi.hermanaa" target="_blank" class="btn">Follow Us</a>
+   <p>Stay updated with our latest collections and exclusive offers!</p>
+   </section>
+
+</section>
+
+<section id="quality">
+  <h2>Quality Products</h2>
+  <p class="quality-sub">
+    Brand new clothes designed for everyday elegance.
+  </p>
+
+  <div class="quality-grid">
+
+    <div class="quality-card">
+      <!-- <img src="images/product1.png"> -->
+      <h3>01 Natural Materials</h3>
+      <p>Carefully selected fabrics made for comfort and durability.</p>
+    </div>
+
+    <div class="quality-card">
+      <!-- <img src="images/product2.png"> -->
+      <h3>02 Premium Craft</h3>
+      <p>Each piece is designed with precision and timeless style.</p>
+    </div>
+
+    <div class="quality-card">
+      <!-- <img src="images/product3.png"> -->
+      <h3>03 Everyday Wear</h3>
+      <p>Fashion that fits both casual and modern lifestyles.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!--    <?php include 'MH_footer.php'; ?>  
+    
+
+
+-->
+
+
+
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,14 @@
+
+<?php
+
+@include 'MH_configuration.php';
+session_start();
+session_unset();
+session_destroy();
+
+
+header('location:MH_login.php');
+exit();
+?>
+
+

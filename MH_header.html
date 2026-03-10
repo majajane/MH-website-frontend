@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="MH_components.css">
+   <link rel="icon" href="images/profilepic.png" type="images/x-icon">
+   
+</head>
+<body>
+
+   <header class="header">
+   <div class="flex">
+   
+      <a href="MH_home.html" class="logo">Mi<span>Hermana</span></a>
+
+      <nav class="navbar">
+         <a href="MH_Home.html">Home</a>
+         <a href="MH_info.html">Info</a>
+         <a href="MH_user_orders.html">Orders</a>
+         <a href="MH_about_us.html">About us</a>
+      </nav>
+
+      
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+            <div class="profile">
+      <?php
+      // Start session if not already started
+      if (session_status() === PHP_SESSION_NONE) {
+         session_start();
+      }
+
+      // Get admin ID from session
+      $admin_id = $_SESSION['admin_id'] ?? null;
+
+      // Initialize $fetch_profile with defaults
+      $fetch_profile = [
+         'image' => 'default.png',
+         'name' => ''
+      ];
+
+      if ($admin_id) {
+         // Fetch admin/user profile safely
+         $select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
+         $select_profile->execute([$admin_id]);
+         $profile_data = $select_profile->fetch(PDO::FETCH_ASSOC);
+
+         if ($profile_data) {
+            $fetch_profile = $profile_data; // overwrite defaults if found
+         }
+      }
+      ?>
+         <img src="uploaded_img/<?= $fetch_profile['image']; ?>" alt="">
+
+
+         <a href="MH_user_profile_update.html" class="btn">Update Profile</a>
+         <a href="MH_logout.html" class="delete-btn">Logout</a>
+         <div class="flex-btn">
+            <a href="MH_login.html" class="option-btn">Login now</a>
+            <a href="MH_register.html" class="option-btn">Register now</a>
+         </div>
+         </div>
+      </div>
+   </div>
+
+</header>
+
+
+
+      <script src="script.js"></script>
+</body>
+</html>

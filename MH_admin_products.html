@@ -1,0 +1,175 @@
+<!--
+
+<?php
+
+@include 'MH_configuration.php';
+session_start();
+$admin_id = $_SESSION['admin_id'];
+
+if(!isset($admin_id)){
+   header('location:MH_login.php');
+};
+
+if(isset($_POST['add_product'])){
+
+   $dressnum = htmlspecialchars(trim($_POST['dressnum']));
+   $batchcode = htmlspecialchars(trim($_POST['batchcode']));
+   $price = (float) $_POST['price'];
+   $qty = (int) $_POST['qty'];
+   $album = htmlspecialchars(trim($_POST['album']));
+   $details = htmlspecialchars(trim($_POST['details']));
+
+   $image = $_FILES['image']['name'];
+   $image = htmlspecialchars(trim($image));
+   $image_size = $_FILES['image']['size'];
+   $image_tmp_name = $_FILES['image']['tmp_name'];
+   $image_folder = 'uploaded_img/'.$image;
+
+
+   $select_products = $conn->prepare("SELECT * FROM `products` WHERE dressnum = ?");
+   $select_products->execute([$dressnum]);
+
+
+   if($select_products->rowCount() > 0){
+      $message[] = 'Product dress number already exist!';
+   }else{
+
+      $insert_products = $conn->prepare("
+   INSERT INTO `products`
+   (dressnum, batchcode, album, details, price, qty, image)
+   VALUES(?,?,?,?,?,?,?)
+");
+
+$insert_products->execute([
+   $dressnum,
+   $batchcode,
+   $album,
+   $details,
+   $price,
+   $qty,
+   $image
+]);
+
+      if($insert_products){
+         if($image_size > 2000000){
+            $message[] = 'Image size is too large!';
+         }else{
+            move_uploaded_file($image_tmp_name, $image_folder);
+            $message[] = 'New product added!';
+         }
+      }
+   }
+};
+
+
+if(isset($_GET['delete'])){
+   $delete_id = $_GET['delete'];
+   $select_delete_image = $conn->prepare("SELECT image FROM `products` WHERE id = ?");
+   $select_delete_image->execute([$delete_id]);
+   $fetch_delete_image = $select_delete_image->fetch(PDO::FETCH_ASSOC);
+   unlink('uploaded_img/'.$fetch_delete_image['image']);
+   $delete_products = $conn->prepare("DELETE FROM `products` WHERE id = ?");
+   $delete_products->execute([$delete_id]);
+   header('location:MH_admin_products.php');
+
+}
+
+?>
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Products</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+   <link rel="stylesheet" href="MH_admin_style.css">
+   <link rel="icon" href="images/profilepic.png" type="images/x-icon">
+
+</head>
+<body>
+   
+
+     <?php include 'MH_admin_header.php'; ?>  
+
+
+<section class="add-products">
+   <h1 class="title">Add a new product</h1>
+
+
+   <form action="" method="POST" enctype="multipart/form-data">
+      <div class="flex">
+         <div class="inputBox">
+         <input type="number" name="dressnum" class="box" required placeholder="Dress no. (eg. 1920)" min="1" >
+         <input type="number" min="0" name="qty" class="box" required placeholder="Qty (eg. 20)">
+         <select name="album" class="box" required>
+            <option value="" selected disabled>Select the album name</option>
+               <option value="February Collection 2026">February Collection 2026</option>
+               <option value="Sale February Collection 2026">Sale February Collection 2026</option>
+               <option value="Super Sale February Collection 2026">Super Sale February Collection 2026</option>
+         </select>
+         </div>
+         <div class="inputBox">
+         <input type="number" name="batchcode" class="box" required pattern="[0-9]+-[0-9]+" placeholder="Batch code (eg. 1-123)" >
+         <input type="number" min="1" name="price" class="box" required placeholder="Price (eg. 300)">
+         <input type="file" name="image" required class="box" accept="image/jpg, image/jpeg, image/png">
+         </div>
+      </div>
+      <textarea name="details" class="box" required placeholder="Enter product details here (clothing fabric, sizes available, etc.)" cols="30" rows="10"></textarea>
+      <input type="submit" class="btn" value="add product" name="add_product">
+   </form>
+
+
+</section>
+
+
+<section class="show-products">
+   <h1 class="title">Products added</h1>
+   <div class="box-container">
+
+
+   <!--
+
+   <?php
+      $show_products = $conn->prepare("SELECT * FROM `products`");
+      $show_products->execute();
+      if($show_products->rowCount() > 0){
+         while($fetch_products = $show_products->fetch(PDO::FETCH_ASSOC)){  
+   ?>
+   <div class="box">
+      <div class="price">₱  <?= $fetch_products['price']; ?>/-</div>
+      <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+      <div class="dressnum"><?= $fetch_products['dressnum']; ?></div>
+      <div class="quantity">Qty: <?= $fetch_products['qty']; ?></div>
+      <div class="album"><?= $fetch_products['album']; ?></div>
+      <div class="details"><?= $fetch_products['details']; ?></div>
+      <div class="flex-btn">
+         <a href="MH_admin_update_products.php?update=<?= $fetch_products['id']; ?>" class="option-btn">Update</a>
+         <a href="MH_admin_products.php?delete=<?= $fetch_products['id']; ?>" class="delete-btn" onclick="return confirm('delete this product?');">delete</a>
+      </div>
+   </div>
+   <?php
+      }
+   }else{
+      echo '<p class="empty">No products added yet!</p>';
+   }
+   ?>
+
+-->
+
+   </div>
+</section>
+
+
+
+<script src="js/script.js"></script>
+
+
+</body>
+</html>
+
